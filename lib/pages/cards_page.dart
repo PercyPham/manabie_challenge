@@ -6,7 +6,10 @@ class CardsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Text('Cards Page'),
+        child: Text(
+          'Cards Page',
+          key: Key('TemporaryText'),
+        ),
       ),
     );
   }

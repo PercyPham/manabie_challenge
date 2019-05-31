@@ -1,16 +1,21 @@
 # manabie_challenge
 
-A new Flutter project.
+Solution for Manabie Challenge.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Follow instruction in [Get started](https://flutter.dev/docs/get-started/install) to setup project.
 
-A few resources to get you started if this is your first Flutter project:
+## Test
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+For unit tests, run this command:
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+```
+flutter test
+```
+
+For integration test, run this command:
+
+```
+flutter drive --target=test_driver/app.dart
+```
