@@ -24,3 +24,13 @@ class ChooseCard extends CardEvent {
   @override
   String toString() => 'ChooseCard { chosenCardIndex: $chosenCardIndex }';
 }
+
+class IncreaseNumberInCard extends CardEvent {
+  final int chosenCardIndex;
+
+  IncreaseNumberInCard(this.chosenCardIndex) : super([chosenCardIndex]);
+
+  @override
+  String toString() =>
+      'IncreaseNumberInCard { chosenCardIndex: $chosenCardIndex }';
+}

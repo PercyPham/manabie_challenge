@@ -60,5 +60,30 @@ main() {
         ],
       );
     });
+
+    test('event IncreaseNumberInCard increase chosen card number by 1', () {
+      final chosenCardIndex = 1;
+
+      final currentChosenCardData = cards[chosenCardIndex];
+      final newChosenCardData = CardData(
+        color: currentChosenCardData.color,
+        number: currentChosenCardData.number + 1,
+      );
+
+      final List<CardData> newCardList = [];
+      newCardList.addAll(cards);
+      newCardList[chosenCardIndex] = newChosenCardData;
+
+      testWithPopulatedState(
+        additionExpected: [
+          CardLoaded(cards: cards, chosenCardIndex: chosenCardIndex),
+          CardLoaded(cards: newCardList, chosenCardIndex: chosenCardIndex),
+        ],
+        additionEvents: [
+          ChooseCard(chosenCardIndex),
+          IncreaseNumberInCard(chosenCardIndex),
+        ],
+      );
+    });
   });
 }
