@@ -4,9 +4,38 @@ import 'package:manabie_challenge/bloc/bloc.dart';
 import 'package:manabie_challenge/models/card_data.dart';
 
 main() {
-  group('CardBloc', () {
-    CardBloc cardBloc;
+  CardBloc cardBloc;
 
+  List<CardData> cards = [
+    CardData(number: 0, color: Colors.red),
+    CardData(number: 0, color: Colors.blue),
+    CardData(number: 0, color: Colors.green),
+  ];
+
+  testWithPopulatedState({
+    List<CardState> additionExpected = const [],
+    List<CardEvent> additionEvents = const [],
+  }) {
+    final List<CardState> expected = [
+      CardUninitialized(),
+      CardLoaded(cards: cards, chosenCardIndex: null),
+    ];
+    expected.addAll(additionExpected);
+
+    final List<CardEvent> eventsToBeDispatched = [LoadCard(cards)];
+    eventsToBeDispatched.addAll(additionEvents);
+
+    expectLater(
+      cardBloc.state,
+      emitsInOrder(expected),
+    );
+
+    eventsToBeDispatched.forEach((event) {
+      cardBloc.dispatch(event);
+    });
+  }
+
+  group('CardBloc', () {
     setUp(() {
       cardBloc = CardBloc();
     });
@@ -16,56 +45,20 @@ main() {
     });
 
     test('event LoadCard populate state with card datas', () {
-      final cards = [
-        CardData(number: 0, color: Colors.red),
-        CardData(number: 0, color: Colors.blue),
-        CardData(number: 0, color: Colors.green),
-      ];
-
-      final List<CardState> expected = [
-        CardUninitialized(),
-        CardLoaded(
-          cards: cards,
-          chosenCardIndex: null,
-        ),
-      ];
-
-      expectLater(
-        cardBloc.state,
-        emitsInOrder(expected),
-      );
-
-      cardBloc.dispatch(LoadCard(cards));
+      testWithPopulatedState();
     });
 
     test('event ChooseCard assign chosen card index to state', () {
       final chosenCardIndex = 1;
 
-      final cards = [
-        CardData(number: 0, color: Colors.red),
-        CardData(number: 0, color: Colors.blue),
-        CardData(number: 0, color: Colors.green),
-      ];
-
-      final List<CardState> expected = [
-        CardUninitialized(),
-        CardLoaded(
-          cards: cards,
-          chosenCardIndex: null,
-        ),
-        CardLoaded(
-          cards: cards,
-          chosenCardIndex: chosenCardIndex,
-        ),
-      ];
-
-      expectLater(
-        cardBloc.state,
-        emitsInOrder(expected),
+      testWithPopulatedState(
+        additionExpected: [
+          CardLoaded(cards: cards, chosenCardIndex: chosenCardIndex)
+        ],
+        additionEvents: [
+          ChooseCard(chosenCardIndex),
+        ],
       );
-
-      cardBloc.dispatch(LoadCard(cards));
-      cardBloc.dispatch(ChooseCard(chosenCardIndex));
     });
   });
 }

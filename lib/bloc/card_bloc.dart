@@ -10,11 +10,30 @@ class CardBloc extends Bloc<CardEvent, CardState> {
   Stream<CardState> mapEventToState(
     CardEvent event,
   ) async* {
-    if (event is LoadCard) {
-      yield CardLoaded(cards: event.cards, chosenCardIndex: null);
-    } else if (event is ChooseCard) {
-      yield (currentState as CardLoaded)
-          .copyWith(chosenCardIndex: event.chosenCardIndex);
+    CardState newCardState;
+
+    switch (event.runtimeType) {
+      case LoadCard:
+        newCardState = _mapLoadCardEventToState(event);
+        break;
+      case ChooseCard:
+        newCardState = _mapChooseCardEventToState(
+          event,
+          currentState as CardLoaded,
+        );
+        break;
     }
+
+    yield newCardState;
+  }
+
+  CardState _mapLoadCardEventToState(LoadCard event) =>
+      CardLoaded(cards: event.cards, chosenCardIndex: null);
+
+  CardState _mapChooseCardEventToState(
+    ChooseCard event,
+    CardLoaded currentState,
+  ) {
+    return currentState.copyWith(chosenCardIndex: event.chosenCardIndex);
   }
 }

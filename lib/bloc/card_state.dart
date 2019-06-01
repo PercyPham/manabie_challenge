@@ -16,8 +16,10 @@ class CardLoaded extends CardState {
   final List<CardData> cards;
   final int chosenCardIndex;
 
-  CardLoaded({this.cards, this.chosenCardIndex})
-      : super([cards, chosenCardIndex]);
+  CardLoaded({
+    this.cards,
+    this.chosenCardIndex,
+  }) : super([cards, chosenCardIndex]);
 
   CardLoaded copyWith({
     List<CardData> cards,
