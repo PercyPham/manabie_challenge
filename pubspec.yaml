@@ -1,5 +1,6 @@
 name: manabie_challenge
 description: Solution for Manabie Challenge.
+author: Hung Pham <hungpm.percy@gmail.com>
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -7,6 +8,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  bloc: any
+  flutter_bloc: any
+  equatable: any
 
 dev_dependencies:
   flutter_test:
