@@ -37,5 +37,35 @@ main() {
 
       cardBloc.dispatch(LoadCard(cards));
     });
+
+    test('event ChooseCard assign chosen card index to state', () {
+      final chosenCardIndex = 1;
+
+      final cards = [
+        CardData(number: 0, color: Colors.red),
+        CardData(number: 0, color: Colors.blue),
+        CardData(number: 0, color: Colors.green),
+      ];
+
+      final List<CardState> expected = [
+        CardUninitialized(),
+        CardLoaded(
+          cards: cards,
+          chosenCardIndex: null,
+        ),
+        CardLoaded(
+          cards: cards,
+          chosenCardIndex: chosenCardIndex,
+        ),
+      ];
+
+      expectLater(
+        cardBloc.state,
+        emitsInOrder(expected),
+      );
+
+      cardBloc.dispatch(LoadCard(cards));
+      cardBloc.dispatch(ChooseCard(chosenCardIndex));
+    });
   });
 }

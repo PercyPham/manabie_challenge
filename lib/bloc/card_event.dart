@@ -15,3 +15,12 @@ class LoadCard extends CardEvent {
   @override
   String toString() => 'LoadCard { cards: ${cards.length} }';
 }
+
+class ChooseCard extends CardEvent {
+  final int chosenCardIndex;
+
+  ChooseCard(this.chosenCardIndex) : super([chosenCardIndex]);
+
+  @override
+  String toString() => 'ChooseCard { chosenCardIndex: $chosenCardIndex }';
+}

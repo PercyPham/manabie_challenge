@@ -19,6 +19,16 @@ class CardLoaded extends CardState {
   CardLoaded({this.cards, this.chosenCardIndex})
       : super([cards, chosenCardIndex]);
 
+  CardLoaded copyWith({
+    List<CardData> cards,
+    int chosenCardIndex,
+  }) {
+    return CardLoaded(
+      cards: cards ?? this.cards,
+      chosenCardIndex: chosenCardIndex ?? this.chosenCardIndex,
+    );
+  }
+
   @override
   String toString() =>
       'CardLoaded { cards: ${cards.length}, chosenCardIndex: $chosenCardIndex }';
