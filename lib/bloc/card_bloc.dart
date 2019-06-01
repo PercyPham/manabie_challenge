@@ -10,6 +10,8 @@ class CardBloc extends Bloc<CardEvent, CardState> {
   Stream<CardState> mapEventToState(
     CardEvent event,
   ) async* {
-    // TODO: Add Logic
+    if (event is LoadCard) {
+      yield CardLoaded(cards: event.cards, chosenCardIndex: null);
+    }
   }
 }
