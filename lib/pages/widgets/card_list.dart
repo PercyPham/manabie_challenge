@@ -10,6 +10,7 @@ class CardList extends StatelessWidget {
       itemCount: 10,
       itemBuilder: (BuildContext context, int index) {
         return CardItem(
+          cardKey: 'card_$index',
           cardData: CardData(number: 0, color: Colors.red),
           width: 100,
           margin: EdgeInsets.symmetric(

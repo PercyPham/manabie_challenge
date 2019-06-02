@@ -6,6 +6,7 @@ class DetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardItem(
+      cardKey: 'detail_card',
       cardData: CardData(number: 0, color: Colors.red),
       width: 200,
       height: 200,

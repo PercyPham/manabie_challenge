@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manabie_challenge/models/card_data.dart';
 
 class CardItem extends StatelessWidget {
+  final String cardKey;
   final CardData cardData;
   final Function onTap;
   final double width;
@@ -9,13 +10,13 @@ class CardItem extends StatelessWidget {
   final EdgeInsetsGeometry margin;
 
   CardItem({
-    Key key,
+    this.cardKey,
     this.cardData,
     this.onTap,
     this.width,
     this.height,
     this.margin,
-  }) : super(key: key);
+  }) : super(key: Key(cardKey));
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class CardItem extends StatelessWidget {
     return Center(
       child: Text(
         '$number',
+        key: Key('${cardKey}_value'),
         textDirection: TextDirection.ltr,
         style: TextStyle(fontSize: 40),
       ),

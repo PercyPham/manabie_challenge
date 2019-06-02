@@ -11,7 +11,7 @@ void main() {
 
       await tester.pumpWidget(
         CardItem(
-          key: Key('card_item'),
+          cardKey: 'card_item',
           onTap: onTap,
         ),
       );
