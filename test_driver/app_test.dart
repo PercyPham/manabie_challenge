@@ -88,13 +88,6 @@ void main() {
       );
       await tapOn(firstCardFinder);
       expect(await getTextFrom(detailCardFinder), "1");
-      await driver.scrollUntilVisible(
-        cardListFinder,
-        secondCardFinder.card,
-        dxScroll: -300.0,
-      );
-      await tapOn(secondCardFinder);
-      expect(await getTextFrom(detailCardFinder), "2");
     });
   });
 }
