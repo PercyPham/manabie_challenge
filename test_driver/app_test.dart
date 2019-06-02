@@ -5,8 +5,9 @@ void main() {
   group('Manabie Challenge App', () {
     FlutterDriver driver;
 
+    final cardListFinder = find.byValueKey('card_list');
     final firstCardFinder = find.byValueKey('card_0');
-    final secondCardFinder = find.byValueKey('card_1');
+    final secondCardFinder = find.byValueKey('card_7');
     final detailCardFinder = find.byValueKey("detail_card");
 
     // This method has try/catch to make error thrown more readable since the
@@ -48,6 +49,11 @@ void main() {
       expect(await getTextFrom(detailCardFinder), "1");
 
       // increase number in second card
+      await driver.scrollUntilVisible(
+        cardListFinder,
+        secondCardFinder,
+        dxScroll: -300.0,
+      );
       await driver.tap(secondCardFinder);
       expect(await getTextFrom(secondCardFinder), "0");
       expect(await getTextFrom(detailCardFinder), "0");
@@ -57,8 +63,18 @@ void main() {
       expect(await getTextFrom(detailCardFinder), "2");
 
       // ensure showing card detail when switching between two cards
+      await driver.scrollUntilVisible(
+        cardListFinder,
+        secondCardFinder,
+        dxScroll: 300.0,
+      );
       await driver.tap(firstCardFinder);
       expect(await getTextFrom(detailCardFinder), "1");
+      await driver.scrollUntilVisible(
+        cardListFinder,
+        secondCardFinder,
+        dxScroll: -300.0,
+      );
       await driver.tap(secondCardFinder);
       expect(await getTextFrom(detailCardFinder), "2");
     });
