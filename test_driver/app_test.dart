@@ -11,32 +11,81 @@ void main() {
 
     final cardListFinder = find.byValueKey('card_list');
 
-    final firstCardFinder = CardFinder('card_0');
-    final secondCardFinder = CardFinder('card_7');
-    final detailCardFinder = CardFinder('detail_card');
+    final firstCard = CardFinder('card_0');
+    final seventhCard = CardFinder('card_7');
+    final detailCard = CardFinder('detail_card');
 
     // This method has try/catch to make error thrown more readable since the
     //  original error is hard to read and hard to locate line throwing error
-    final getTextFrom = (CardFinder cardFinder) async {
+    final getTextFrom = (CardFinder card) async {
       String text;
       try {
         text = await driver.getText(
-          cardFinder.value,
+          card.valueFinder,
           timeout: Duration(seconds: 1),
         );
       } catch (e) {
-        throw '> Cannot find text in "${cardFinder.cardKey}"';
+        throw '> Cannot find text in "${card.cardKey}"';
       }
       return text;
     };
 
-    final tapOn = (CardFinder finder) async {
-      await driver.tap(finder.card);
+    final tapOn = (CardFinder card) => driver.tap(card.cardFinder);
 
-      var waitForBlocToChangeState =
-          () => Future.delayed(Duration(milliseconds: 10));
-      await waitForBlocToChangeState();
+    final waitForBlocToChangeState =
+        () => Future.delayed(Duration(milliseconds: 50));
+
+    final scrollToFind = (CardFinder card, {double dxScroll}) {
+      return driver.scrollUntilVisible(
+        cardListFinder,
+        card.cardFinder,
+        dxScroll: dxScroll,
+      );
     };
+
+    waitForFirstCardToShowUp() async {
+      await driver.waitFor(firstCard.cardFinder);
+    }
+
+    chooseFirstCardToSeeItsNumberInDetailCard({int detailCardWillShow}) async {
+      await tapOn(firstCard);
+      await waitForBlocToChangeState();
+      expect(await getTextFrom(firstCard), '$detailCardWillShow');
+      expect(await getTextFrom(detailCard), '$detailCardWillShow');
+    }
+
+    increaseFirstCardNumberByOne({int detailCardWillShow}) async {
+      await tapOn(detailCard);
+      await waitForBlocToChangeState();
+      expect(await getTextFrom(firstCard), '$detailCardWillShow');
+      expect(await getTextFrom(detailCard), '$detailCardWillShow');
+    }
+
+    chooseSeventhCardToSeeItsNumberInDetailCard(
+        {int detailCardWillShow}) async {
+      await scrollToFind(seventhCard, dxScroll: -300.0);
+      await tapOn(seventhCard);
+      await waitForBlocToChangeState();
+      expect(await getTextFrom(seventhCard), '$detailCardWillShow');
+      expect(await getTextFrom(detailCard), '$detailCardWillShow');
+    }
+
+    increaseSeventhCardNumberByTwo({int detailCardWillShow}) async {
+      await tapOn(detailCard);
+      await tapOn(detailCard);
+      await waitForBlocToChangeState();
+      expect(await getTextFrom(seventhCard), '$detailCardWillShow');
+      expect(await getTextFrom(detailCard), '$detailCardWillShow');
+    }
+
+    chooseFirstCardToEnsureItsNumberDidNotChange(
+        {int detailCardWillShow}) async {
+      await scrollToFind(firstCard, dxScroll: 300.0);
+      await tapOn(firstCard);
+      await waitForBlocToChangeState();
+      expect(await getTextFrom(firstCard), '$detailCardWillShow');
+      expect(await getTextFrom(detailCard), '$detailCardWillShow');
+    }
 
     setUpAll(() async {
       driver = await FlutterDriver.connect();
@@ -54,40 +103,17 @@ void main() {
     });
 
     test('be able to choose card and increase its number', () async {
-      await driver.waitFor(firstCardFinder.card);
+      await waitForFirstCardToShowUp();
 
-      // tap on first card item and show its number in detail card
-      expect(await getTextFrom(firstCardFinder), "0");
-      await tapOn(firstCardFinder);
-      expect(await getTextFrom(detailCardFinder), "0");
+      await chooseFirstCardToSeeItsNumberInDetailCard(detailCardWillShow: 0);
 
-      // increase number in first card
-      await tapOn(detailCardFinder);
-      expect(await getTextFrom(firstCardFinder), "1");
-      expect(await getTextFrom(detailCardFinder), "1");
+      await increaseFirstCardNumberByOne(detailCardWillShow: 1);
 
-      // increase number in second card
-      await driver.scrollUntilVisible(
-        cardListFinder,
-        secondCardFinder.card,
-        dxScroll: -300.0,
-      );
-      await tapOn(secondCardFinder);
-      expect(await getTextFrom(secondCardFinder), "0");
-      expect(await getTextFrom(detailCardFinder), "0");
-      await tapOn(detailCardFinder);
-      await tapOn(detailCardFinder);
-      expect(await getTextFrom(secondCardFinder), "2");
-      expect(await getTextFrom(detailCardFinder), "2");
+      await chooseSeventhCardToSeeItsNumberInDetailCard(detailCardWillShow: 0);
 
-      // ensure showing card detail when switching between two cards
-      await driver.scrollUntilVisible(
-        cardListFinder,
-        firstCardFinder.card,
-        dxScroll: 300.0,
-      );
-      await tapOn(firstCardFinder);
-      expect(await getTextFrom(detailCardFinder), "1");
+      await increaseSeventhCardNumberByTwo(detailCardWillShow: 2);
+
+      await chooseFirstCardToEnsureItsNumberDidNotChange(detailCardWillShow: 1);
     });
   });
 }

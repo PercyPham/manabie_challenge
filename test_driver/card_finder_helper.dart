@@ -5,7 +5,7 @@ class CardFinder {
 
   CardFinder(this.cardKey);
 
-  SerializableFinder get card => find.byValueKey(cardKey);
+  SerializableFinder get cardFinder => find.byValueKey(cardKey);
 
-  SerializableFinder get value => find.byValueKey('${cardKey}_value');
+  SerializableFinder get valueFinder => find.byValueKey('${cardKey}_value');
 }
