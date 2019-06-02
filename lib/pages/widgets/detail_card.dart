@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manabie_challenge/bloc/bloc.dart';
+import 'package:manabie_challenge/models/card_data.dart';
+
 import 'card_item.dart';
 
 class DetailCard extends StatelessWidget {
@@ -11,23 +13,31 @@ class DetailCard extends StatelessWidget {
     return BlocBuilder<CardEvent, CardState>(
       bloc: _cardBloc,
       builder: (BuildContext context, CardState state) {
-        if ((state as CardLoaded).chosenCardIndex == null) {
-          return Container();
-        } else {
-          return CardItem(
-            cardKey: 'detail_card',
-            cardData: (state as CardLoaded)
-                .cards[(state as CardLoaded).chosenCardIndex],
-            onTap: () {
-              _cardBloc.dispatch(
-                  IncreaseNumberInCard((state as CardLoaded).chosenCardIndex));
-            },
-            width: 200,
-            height: 200,
-            margin: EdgeInsets.only(top: 10),
-          );
-        }
+        CardLoaded loadedState = state as CardLoaded;
+        int chosenCardIndex = loadedState?.chosenCardIndex;
+
+        bool hasChosenCard = chosenCardIndex != null;
+        if (!hasChosenCard) return Container();
+
+        CardData chosenCardData = loadedState.cards[chosenCardIndex];
+        return _buildDetailCard(
+          chosenCardData,
+          onTap: () {
+            _cardBloc.dispatch(IncreaseNumberInCard(chosenCardIndex));
+          },
+        );
       },
+    );
+  }
+
+  Widget _buildDetailCard(CardData cardData, {Function onTap}) {
+    return CardItem(
+      cardKey: 'detail_card',
+      cardData: cardData,
+      onTap: onTap,
+      width: 200,
+      height: 200,
+      margin: EdgeInsets.only(top: 10),
     );
   }
 }

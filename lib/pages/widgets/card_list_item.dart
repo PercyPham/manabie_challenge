@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manabie_challenge/bloc/bloc.dart';
+
 import 'card_item.dart';
 
 class CardListItem extends StatelessWidget {
@@ -14,20 +15,14 @@ class CardListItem extends StatelessWidget {
 
     return BlocBuilder<CardEvent, CardState>(
       bloc: _cardBloc,
-      condition: (previousState, currentState) {
-        if (previousState == null) return true;
-        return (previousState as CardLoaded).cards[cardIndex] !=
-            (currentState as CardLoaded).cards[cardIndex];
-      },
+      condition: _checkIfShouldRebuildCard,
       builder: (BuildContext context, CardState state) {
         var cardData = (state as CardLoaded).cards[cardIndex];
 
         return CardItem(
           cardKey: 'card_$cardIndex',
           cardData: cardData,
-          onTap: () {
-            _cardBloc.dispatch(ChooseCard(cardIndex));
-          },
+          onTap: () => _cardBloc.dispatch(ChooseCard(cardIndex)),
           width: 100,
           margin: EdgeInsets.symmetric(
             vertical: 10,
@@ -36,5 +31,14 @@ class CardListItem extends StatelessWidget {
         );
       },
     );
+  }
+
+  bool _checkIfShouldRebuildCard(CardState prevState, CardState currState) {
+    if (prevState == null) return true;
+
+    var previousCardData = (prevState as CardLoaded).cards[cardIndex];
+    var currentCardData = (currState as CardLoaded).cards[cardIndex];
+
+    return previousCardData != currentCardData;
   }
 }
