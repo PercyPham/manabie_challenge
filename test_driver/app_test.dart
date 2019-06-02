@@ -15,7 +15,7 @@ void main() {
     final getTextFrom = (finder) async {
       String text;
       try {
-        text = await driver.getText(finder, timeout: Duration(seconds: 1));
+        text = await driver.getText(finder, timeout: Duration(seconds: 3));
       } catch (e) {
         throw '> Cannot find text in "${finder?.keyValueString}"';
       }
