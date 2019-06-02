@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:manabie_challenge/models/card_data.dart';
-import 'card_item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:manabie_challenge/bloc/bloc.dart';
+import 'card_list_item.dart';
 
 class CardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: 10,
-      itemBuilder: (BuildContext context, int index) {
-        return CardItem(
-          cardKey: 'card_$index',
-          cardData: CardData(number: 0, color: Colors.red),
-          width: 100,
-          margin: EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 5,
-          ),
+    CardBloc _cardBloc = BlocProvider.of<CardBloc>(context);
+
+    return BlocBuilder<CardEvent, CardState>(
+      bloc: _cardBloc,
+      condition: (_, __) => false,
+      builder: (BuildContext context, CardState state) {
+        CardLoaded loadedState = state as CardLoaded;
+
+        return ListView.builder(
+          key: Key('card_list'),
+          scrollDirection: Axis.horizontal,
+          itemCount: loadedState.cards.length,
+          itemBuilder: (BuildContext context, int index) {
+            return CardListItem(index);
+          },
         );
       },
     );

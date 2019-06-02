@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
@@ -28,7 +30,13 @@ void main() {
       return text;
     };
 
-    final tapOn = (CardFinder finder) => driver.tap(finder.card);
+    final tapOn = (CardFinder finder) async {
+      await driver.tap(finder.card);
+
+      var waitForBlocToChangeState =
+          () => Future.delayed(Duration(milliseconds: 10));
+      await waitForBlocToChangeState();
+    };
 
     setUpAll(() async {
       driver = await FlutterDriver.connect();
