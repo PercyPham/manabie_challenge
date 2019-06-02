@@ -75,7 +75,7 @@ void main() {
       // ensure showing card detail when switching between two cards
       await driver.scrollUntilVisible(
         cardListFinder,
-        secondCardFinder.card,
+        firstCardFinder.card,
         dxScroll: 300.0,
       );
       await tapOn(firstCardFinder);
