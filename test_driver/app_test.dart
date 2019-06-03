@@ -12,7 +12,7 @@ void main() {
     final cardListFinder = find.byValueKey('card_list');
 
     final firstCard = CardFinder('card_0');
-    final seventhCard = CardFinder('card_7');
+    final seventhCard = CardFinder('card_6');
     final detailCard = CardFinder('detail_card');
 
     // This method has try/catch to make error thrown more readable since the
