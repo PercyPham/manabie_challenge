@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:manabie_challenge/pages/widgets/card_item.dart';
+import 'package:manabie_challenge/pages/cards_page/widgets/card_item.dart';
 
 void main() {
   testWidgets(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:manabie_challenge/bloc/bloc.dart';
 
-import 'package:manabie_challenge/pages/loading_page.dart';
-import 'package:manabie_challenge/pages/cards_page.dart';
+import 'package:manabie_challenge/pages/loading_page/loading_page.dart';
+import 'package:manabie_challenge/pages/cards_page/cards_page.dart';
 
 class ManabieChallengeApp extends StatelessWidget {
   @override
